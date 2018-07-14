@@ -50,6 +50,7 @@ import fr.orsay.lri.varna.models.rna.RNA;
 
 public class VARNA extends JApplet implements InterfaceParameterLoader,DropTargetListener {
 	ArrayList<VARNAPanel> _vpl = null;
+	boolean test;
 	static{
 		/**
 		 * 
