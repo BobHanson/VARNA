@@ -735,9 +735,13 @@ import fr.orsay.lri.varna.views.VueUI;
 
 /**
  * 
- * BH j2s SwingJS Added PropertyChangeListener for returns from VueUI.  
+ * BH (early) j2s SwingJS Added PropertyChangeListener for returns from VueUI.  
  * 
- *  
+ * BH 2019.05.15 flashes white background
+ *    solution: replaced during-paint setBackground() with g.setColor();g.fill();
+ * 
+ * BH 2019.05.15 initialization shows popup menu raw creation objects
+ *    solution: moved menu creation out of paintComponent()
  *  
  * 
  * The RNA 2D Panel is a lightweight component that allows for an automatic
@@ -819,7 +823,8 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	private boolean _highlightAnnotation = false;
 
 	private int _titleHeight;
-	private Dimension _border = new Dimension(0, 0);
+	// BH SwingJS issue here is that we are using _border already. Hmm.	
+	private Dimension _myBorder = new Dimension(0, 0);
 
 	private boolean _drawBBox = false;
 	private boolean _drawBorder = false;
@@ -970,6 +975,8 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	}
 
 	private void init() {
+		_popup.buildPopupMenu();
+		this.add(_popup);
 		setBackground(VARNAConfig.DEFAULT_BACKGROUND_COLOR);
 		_manager = new UndoManager();
 		_manager.setLimit(10000);
@@ -981,7 +988,7 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 
 		_premierAffichage = true;
 		_translation = new Point(0, 0);
-
+		
 		_horsCadre = false;
 		this.setFont(_conf._fontBasesGeneral);
 
@@ -2398,8 +2405,6 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 			// _border = new Dimension(0, 0);
 			_translation.x = 0;
 			_translation.y = (int) (-getTitleHeight() / 2.0);
-			_popup.buildPopupMenu();
-			this.add(_popup);
 			_premierAffichage = false;
 		}
 
@@ -2439,6 +2444,14 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 
 		updateTitleHeight();
 
+		if (!transparentBackground) {
+			g2D.setColor(_conf._backgroundColor);
+			g2D.fillRect(0,  0,  getWidth(),  getHeight());
+		} else {
+			super.setBackground(new Color(0, 0, 0, 120));
+		}
+
+
 		if (_debug || _drawBorder) {
 			g2D.setColor(Color.BLACK);
 			g2D.setPlainStroke();
@@ -2448,11 +2461,11 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 		}
 
 		
-		if (!transparentBackground) {
-			super.setBackground(_conf._backgroundColor);
-		} else {
-			super.setBackground(new Color(0, 0, 0, 120));
-		}
+//		if (!transparentBackground) {
+//			super.setBackground(_conf._backgroundColor);
+//		} else {
+//			super.setBackground(new Color(0, 0, 0, 120));
+//		}
 
 		if (getMinimumSize().height < getSize().height
 				&& getMinimumSize().width < getSize().width) {
@@ -2578,7 +2591,7 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	 *            The new border size
 	 */
 	public void setBorderSize(Dimension b) {
-		_border = b;
+		_myBorder = b;
 	}
 
 	/**
@@ -2588,7 +2601,7 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	 * @return The border size
 	 */
 	public Dimension getBorderSize() {
-		return _border;
+		return _myBorder;
 	}
 
 	/**
@@ -3551,8 +3564,8 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	 * @return X-coordinate of the translation
 	 */
 	public int getLeftOffset() {
-		return _border.width
-				+ ((this.getWidth() - 2 * _border.width) - this.getInnerWidth())
+		return _myBorder.width
+				+ ((this.getWidth() - 2 * _myBorder.width) - this.getInnerWidth())
 				/ 2 + _translation.x;
 	}
 
@@ -3563,7 +3576,7 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	 */
 	public int getInnerWidth() {
 		// Largeur du dessin
-		return (int) Math.round((this.getWidth() - 2 * _border.width)
+		return (int) Math.round((this.getWidth() - 2 * _myBorder.width)
 				* _conf._zoom);
 	}
 
@@ -3573,8 +3586,8 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	 * @return Y-coordinate of the translation
 	 */
 	public int getTopOffset() {
-		return _border.height
-				+ ((this.getHeight() - 2 * _border.height) - this
+		return _myBorder.height
+				+ ((this.getHeight() - 2 * _myBorder.height) - this
 						.getInnerHeight()) / 2 + _translation.y;
 	}
 
@@ -3586,7 +3599,7 @@ public class VARNAPanel extends JPanel implements PropertyChangeListener {
 	public int getInnerHeight() {
 		// Hauteur du dessin
 		return (int) Math.round((this.getHeight()) * _conf._zoom - 2
-				* _border.height - getTitleHeight());
+				* _myBorder.height - getTitleHeight());
 	}
 
 	/**

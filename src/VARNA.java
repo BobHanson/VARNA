@@ -55,7 +55,7 @@ public class VARNA extends JApplet implements InterfaceParameterLoader,DropTarge
 	private static final long serialVersionUID = -2598221520127067670L;
 
 	public VARNA() {
-		super();
+		super(); 
 	}
 
 	public void init() {

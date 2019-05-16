@@ -479,6 +479,7 @@ public class VARNAcmd implements InterfaceParameterLoader {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics2D g2 = myImage.createGraphics();
 		vp.paintComponent(g2);
+		g2.dispose();
 		try {
 			FileImageOutputStream out = new FileImageOutputStream(new File(filename));
 			ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
@@ -492,7 +493,6 @@ public class VARNAcmd implements InterfaceParameterLoader {
 		} catch (IOException e) {
 			throw new ExceptionExportFailed(e.getMessage(), filename);
 		}
-
 	}
 
 	public void saveToPNG(String filename, VARNAPanel vp)

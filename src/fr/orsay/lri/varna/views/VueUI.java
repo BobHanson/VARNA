@@ -1194,9 +1194,9 @@ public class VueUI {
 				BufferedImage myImage = new BufferedImage((int) Math.round(_vp.getWidth() * scale),
 						(int) Math.round(_vp.getHeight() * scale), BufferedImage.TYPE_INT_ARGB);
 				// BH j2s SwingJS: was BufferedImage.TRANSLUCENT, which is TYPE_INT_ARGB_PRE ?? no transparent background?
-				Graphics2D g2 = myImage.createGraphics();
 				AffineTransform AF = new AffineTransform();
 				AF.setToScale(scale, scale);
+				Graphics2D g2 = myImage.createGraphics();
 				g2.setTransform(AF);
 				_vp.paintComponent(g2, !_vp.getConfig()._drawBackground);
 				g2.dispose();
@@ -1223,19 +1223,16 @@ public class VueUI {
 					scale = 1. / 100.;
 				else
 					scale = jpeg.getScaleSlider().getValue() / 100.;
-			BufferedImage myImage = new BufferedImage((int) Math.round(_vp
-					.getWidth() * scale), (int) Math.round(_vp.getHeight()
-					* scale), BufferedImage.TYPE_INT_RGB);
-				Graphics2D g2 = myImage.createGraphics();
+				BufferedImage myImage = new BufferedImage((int) Math.round(_vp.getWidth() * scale),
+						(int) Math.round(_vp.getHeight() * scale), BufferedImage.TYPE_INT_RGB);
 				AffineTransform AF = new AffineTransform();
 				AF.setToScale(scale, scale);
+				Graphics2D g2 = myImage.createGraphics();
 				g2.setTransform(AF);
 				_vp.paintComponent(g2);
 				try {
-				FileImageOutputStream out = new FileImageOutputStream(new File(
-						filename));
-				ImageWriter writer = ImageIO
-						.getImageWritersByFormatName("jpeg").next();
+					FileImageOutputStream out = new FileImageOutputStream(new File(filename));
+					ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
 					ImageWriteParam params = writer.getDefaultWriteParam();
 					params.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
 					params.setCompressionQuality(jpeg.getQualitySlider().getValue() / 100.0f);
