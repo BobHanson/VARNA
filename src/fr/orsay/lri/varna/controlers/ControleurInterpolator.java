@@ -2,7 +2,7 @@
  VARNA is a tool for the automated drawing, visualization and annotation of the secondary structure of RNA, designed as a companion software for web servers and databases.
  Copyright (C) 2008  Kevin Darty, Alain Denise and Yann Ponty.
  electronic mail : Yann.Ponty@lri.fr
- paper mail : LRI, bat 490 Université Paris-Sud 91405 Orsay Cedex France
+ paper mail : LRI, bat 490 Universitï¿½ Paris-Sud 91405 Orsay Cedex France
 
  This file is part of VARNA version 3.1.
  VARNA version 3.1 is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
@@ -576,17 +576,12 @@ public class ControleurInterpolator extends Thread implements ActionListener {
 			_d.addLast(d);
 			
 			@SuppressWarnings("unused")
+			// BH SwingJS no notify()
 			Runnable interpolator = ControleurInterpolator.this;
-			/**
-			 * BH SwingJS no notify()
-			 * @j2sNative 
-			 * 
-			 * interpolator.run();
-			 * 
-			 */
-			{
-			notify();
-			}
+			if (/** @j2sNative 1?true:*/false) 
+			  interpolator.run();
+			else 
+			  notify();
 		}
 
 		public synchronized TargetsHolder get() {

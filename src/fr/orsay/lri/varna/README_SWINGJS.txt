@@ -2,6 +2,13 @@
 Status
 ======
 
+7/3/2018
+
+VARNA is running in Jalview in a browser. 
+
+The only capability not enabled is the "duplicate" menu item. 
+This is because SwingJS does not implement serialization.
+ 
 1/10/2018
 
 fixes VueUI handling of JFileChooser and JColorChooser callbacks not using revised SelectedFile and SelectedColor property names

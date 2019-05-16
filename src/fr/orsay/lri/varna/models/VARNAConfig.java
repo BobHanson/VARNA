@@ -367,13 +367,6 @@ public class VARNAConfig implements Serializable, Cloneable {
 	
     public VARNAConfig clone ()
     {
-        
-        /**
-         * @j2sNative
-         * 
-         * return this;
-         * 
-         */
         try
         {
             ByteArrayOutputStream out = new ByteArrayOutputStream ();
